@@ -1,0 +1,26 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  namespace: rhacs
+  name: rhacs
+spec:
+  central:
+    exposure:
+      route:
+        enabled: true
+      loadBalancer:
+        enabled: false
+      nodeport:
+        enabled: false
+    persistence:
+      persistentVolumeClaim:
+        claimName: rhacs-vol
+        size: 100Gi
+        storageClassName: nfs-client # Change this !!!!!
+  scanner:
+    analyzer:
+      scaling:
+        replicas: 1
+        autoScaling: Disabled
+  egress:
+    connectivityPolicy: Online

@@ -1,0 +1,21 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: SecuredCluster
+metadata:
+  name: rhacs-cluster
+  namespace: rhacs
+spec:
+  centralEndpoint: ""
+  clusterName: rhacs-cluster
+  admissionControl:
+    listenOnCreates: true
+    listenOnEvents: true
+    listenOnUpdates: true
+    bypass: BreakGlassAnnotation
+    contactImageScanners: ScanIfMissing
+    timeoutSeconds: 10
+  auditLogs:
+    collection: Auto
+  perNode:
+    collector:
+      collection: KernelModule
+      imageFlavor: Regular

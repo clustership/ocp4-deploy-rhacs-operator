@@ -1,0 +1,30 @@
+#!/usr/bin/env ansible-playbook
+# WIP don't use this !!!
+---
+- hosts: all
+  connection: local
+  # gather_facts true because we need the public ip address
+  gather_facts: true
+  become: false
+
+  tasks:
+
+  - name: Identify operator version
+    command: |
+      oc -n openshift-marketplace get packagemanifests/rhacs-operator \
+        -o jsonpath='{.status.channels[?(@.name == "latest")].currentCSV}'
+    changed_when: no
+    register: acs_operator_version_out
+    tags:
+    - acs
+    - operators
+
+  - name: Store acs_operator_version var
+    set_fact:
+      acs_operator_version: "{{ acs_operator_version_out.stdout }}"
+    tags:
+    - acs
+    - operators
+
+  - debug: msg="{{ acs_operator_version }}"
+
